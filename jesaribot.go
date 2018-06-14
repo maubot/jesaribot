@@ -32,7 +32,7 @@ func (bot *JesariBot) Start() {
 
 func (bot *JesariBot) Stop() {}
 
-func (bot *JesariBot) MessageHandler(evt *maubot.Event) bool {
+func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.EventHandlerResult {
 	if strings.Contains(strings.ToLower(evt.Content.Body), "jesari") {
 		evt.ReplyContent(maubot.Content{
 			Body: "putkiteippi.gif",
@@ -52,9 +52,8 @@ func (bot *JesariBot) MessageHandler(evt *maubot.Event) bool {
 			MsgType: maubot.MsgImage,
 			URL: "mxc://maunium.net/IkSoSYYrtaYJQeCaABSLqKiD",
 		})
-		return false
 	}
-	return true
+	return maubot.Continue
 }
 
 var Plugin = maubot.PluginCreator{
