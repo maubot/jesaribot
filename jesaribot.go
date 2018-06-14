@@ -17,51 +17,48 @@
 package main
 
 import (
-	"encoding/json"
 	"strings"
 
 	"maubot.xyz"
-	"maubot.xyz/database"
-	"maubot.xyz/matrix"
-	"maunium.net/go/gomatrix"
 )
 
 type JesariBot struct {
-	client *matrix.Client
+	client maubot.MatrixClient
 }
 
 func (bot *JesariBot) Start() {
-	bot.client.AddEventHandler(gomatrix.EventMessage, bot.MessageHandler)
+	bot.client.AddEventHandler("m.room.message", bot.MessageHandler)
 }
 
 func (bot *JesariBot) Stop() {}
 
-func (bot *JesariBot) MessageHandler(evt *gomatrix.Event) {
-	text, _ := evt.Content["body"].(string)
-	if strings.Contains(strings.ToLower(text), "jesari") {
-		bot.client.SendMessageEvent(evt.RoomID, "m.room.message", json.RawMessage(`{
-  "body": "putkiteippi.gif",
-  "info": {
-    "mimetype": "image/gif",
-    "thumbnail_info": {
-      "mimetype": "image/png",
-      "h": 153,
-      "w": 364,
-      "size": 51302
-    },
-    "h": 153,
-    "thumbnail_url": "mxc://maunium.net/iivOnCDjcGqGvnwnNWxSbAvb",
-    "w": 364,
-    "size": 2079294
-  },
-  "msgtype": "m.image",
-  "url": "mxc://maunium.net/IkSoSYYrtaYJQeCaABSLqKiD"
-}`))
+func (bot *JesariBot) MessageHandler(evt *maubot.Event) bool {
+	if strings.Contains(strings.ToLower(evt.Content.Body), "jesari") {
+		evt.ReplyContent(maubot.Content{
+			Body: "putkiteippi.gif",
+			Info: maubot.FileInfo{
+				MimeType: "image/gif",
+				ThumbnailInfo: &maubot.FileInfo{
+					MimeType: "image/png",
+					Height: 153,
+					Width: 364,
+					Size: 51302,
+				},
+				ThumbnailURL: "mxc://maunium.net/iivOnCDjcGqGvnwnNWxSbAvb",
+				Height: 153,
+				Width: 364,
+				Size: 2079294,
+			},
+			MsgType: maubot.MsgImage,
+			URL: "mxc://maunium.net/IkSoSYYrtaYJQeCaABSLqKiD",
+		})
+		return false
 	}
+	return true
 }
 
 var Plugin = maubot.PluginCreator{
-	Create: func(bot *maubot.Bot, info *database.Plugin, client *matrix.Client) maubot.Plugin {
+	Create: func(client maubot.MatrixClient) maubot.Plugin {
 		return &JesariBot{
 			client: client,
 		}
