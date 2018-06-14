@@ -63,6 +63,6 @@ var Plugin = maubot.PluginCreator{
 			client: client,
 		}
 	},
-	Name:    "jesaribot",
+	Name:    "maubot.xyz/jesaribot",
 	Version: "1.0.0",
 }
