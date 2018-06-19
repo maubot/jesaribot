@@ -34,7 +34,7 @@ func (bot *JesariBot) Stop() {}
 
 func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.EventHandlerResult {
 	if strings.Contains(strings.ToLower(evt.Content.Body), "jesari") {
-		evt.ReplyContent(maubot.Content{
+		evt.SendContent(maubot.Content{
 			Body: "putkiteippi.gif",
 			Info: maubot.FileInfo{
 				MimeType: "image/gif",
