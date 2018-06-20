@@ -40,8 +40,7 @@ func (bot *JesariBot) Start() {
 func (bot *JesariBot) Stop() {}
 
 func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.CommandHandlerResult {
-
-	evt.ReplyContent(maubot.Content{
+	evt.SendContent(maubot.Content{
 		Body: "putkiteippi.gif",
 		Info: &maubot.FileInfo{
 			MimeType: "image/gif",
