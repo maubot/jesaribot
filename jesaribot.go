@@ -30,7 +30,7 @@ func (bot *JesariBot) Start() {
 	bot.client.SetCommandSpec(&maubot.CommandSpec{
 		PassiveCommands: []maubot.PassiveCommand{{
 			Name:         CommandJesari,
-			Matches:      ".*jesari.*",
+			Matches:      "jesari",
 			MatchAgainst: maubot.MatchAgainstBody,
 		}},
 	})
