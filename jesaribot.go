@@ -18,13 +18,14 @@ package main
 
 import (
 	"maubot.xyz"
+	"maunium.net/go/gomatrix"
 )
 
 type JesariBot struct {
 	client maubot.MatrixClient
 }
 
-const CommandJesari = "jesari"
+const CommandJesari = "net.maunium.jesari"
 
 func (bot *JesariBot) Start() {
 	bot.client.SetCommandSpec(&maubot.CommandSpec{
@@ -40,11 +41,11 @@ func (bot *JesariBot) Start() {
 func (bot *JesariBot) Stop() {}
 
 func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.CommandHandlerResult {
-	evt.SendContent(maubot.Content{
+	evt.SendContent(gomatrix.Content{
 		Body: "putkiteippi.gif",
-		Info: &maubot.FileInfo{
+		Info: &gomatrix.FileInfo{
 			MimeType: "image/gif",
-			ThumbnailInfo: &maubot.FileInfo{
+			ThumbnailInfo: &gomatrix.FileInfo{
 				MimeType: "image/png",
 				Height:   153,
 				Width:    364,
@@ -55,14 +56,14 @@ func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.CommandHandlerRes
 			Width:        364,
 			Size:         2079294,
 		},
-		MsgType: maubot.MsgImage,
+		MsgType: gomatrix.MsgImage,
 		URL:     "mxc://maunium.net/IkSoSYYrtaYJQeCaABSLqKiD",
 	})
 	return maubot.StopCommandPropagation
 }
 
 var Plugin = maubot.PluginCreator{
-	Create: func(client maubot.MatrixClient) maubot.Plugin {
+	Create: func(client maubot.MatrixClient, logger maubot.Logger) maubot.Plugin {
 		return &JesariBot{
 			client: client,
 		}
