@@ -17,47 +17,53 @@
 package main
 
 import (
-	"strings"
-
 	"maubot.xyz"
+	"maunium.net/go/gomatrix"
 )
 
 type JesariBot struct {
 	client maubot.MatrixClient
 }
 
+const CommandJesari = "net.maunium.jesari"
+
 func (bot *JesariBot) Start() {
-	bot.client.AddEventHandler("m.room.message", bot.MessageHandler)
+	bot.client.SetCommandSpec(&maubot.CommandSpec{
+		PassiveCommands: []maubot.PassiveCommand{{
+			Name:         CommandJesari,
+			Matches:      "jesari",
+			MatchAgainst: maubot.MatchAgainstBody,
+		}},
+	})
+	bot.client.AddCommandHandler(CommandJesari, bot.MessageHandler)
 }
 
 func (bot *JesariBot) Stop() {}
 
-func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.EventHandlerResult {
-	if strings.Contains(strings.ToLower(evt.Content.Body), "jesari") {
-		evt.SendContent(maubot.Content{
-			Body: "putkiteippi.gif",
-			Info: maubot.FileInfo{
-				MimeType: "image/gif",
-				ThumbnailInfo: &maubot.FileInfo{
-					MimeType: "image/png",
-					Height: 153,
-					Width: 364,
-					Size: 51302,
-				},
-				ThumbnailURL: "mxc://maunium.net/iivOnCDjcGqGvnwnNWxSbAvb",
-				Height: 153,
-				Width: 364,
-				Size: 2079294,
+func (bot *JesariBot) MessageHandler(evt *maubot.Event) maubot.CommandHandlerResult {
+	evt.SendContent(gomatrix.Content{
+		Body: "putkiteippi.gif",
+		Info: &gomatrix.FileInfo{
+			MimeType: "image/gif",
+			ThumbnailInfo: &gomatrix.FileInfo{
+				MimeType: "image/png",
+				Height:   153,
+				Width:    364,
+				Size:     51302,
 			},
-			MsgType: maubot.MsgImage,
-			URL: "mxc://maunium.net/IkSoSYYrtaYJQeCaABSLqKiD",
-		})
-	}
-	return maubot.Continue
+			ThumbnailURL: "mxc://maunium.net/iivOnCDjcGqGvnwnNWxSbAvb",
+			Height:       153,
+			Width:        364,
+			Size:         2079294,
+		},
+		MsgType: gomatrix.MsgImage,
+		URL:     "mxc://maunium.net/IkSoSYYrtaYJQeCaABSLqKiD",
+	})
+	return maubot.StopCommandPropagation
 }
 
 var Plugin = maubot.PluginCreator{
-	Create: func(client maubot.MatrixClient) maubot.Plugin {
+	Create: func(client maubot.MatrixClient, logger maubot.Logger) maubot.Plugin {
 		return &JesariBot{
 			client: client,
 		}
