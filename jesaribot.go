@@ -25,7 +25,7 @@ type JesariBot struct {
 	client maubot.MatrixClient
 }
 
-const CommandJesari = "net.maunium.jesari"
+const CommandJesari = "xyz.maubot.jesari"
 
 func (bot *JesariBot) Start() {
 	bot.client.SetCommandSpec(&maubot.CommandSpec{
