@@ -7,7 +7,7 @@ COMMAND_JESARI = "xyz.maubot.jesari"
 
 class JesariBot(Plugin):
     async def start(self) -> None:
-        self.client.set_command_spec(CommandSpec(
+        self.set_command_spec(CommandSpec(
             passive_commands=[PassiveCommand(
                 name=COMMAND_JESARI,
                 matches="jesari",
@@ -15,6 +15,9 @@ class JesariBot(Plugin):
             )]
         ))
         self.client.add_command_handler(COMMAND_JESARI, self.handler)
+
+    async def stop(self) -> None:
+        self.client.remove_command_handler(COMMAND_JESARI, self.handler)
 
     @staticmethod
     async def handler(evt: Event) -> None:
