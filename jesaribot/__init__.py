@@ -1,6 +1,6 @@
-from maubot import Plugin, CommandSpec, PassiveCommand, Event
+from maubot import Plugin, CommandSpec, PassiveCommand
 from mautrix.types import (MessageType, MediaMessageEventContent, ImageInfo, ThumbnailInfo,
-                           ContentURI)
+                           ContentURI, MessageEvent)
 
 COMMAND_JESARI = "xyz.maubot.jesari"
 
@@ -20,7 +20,7 @@ class JesariBot(Plugin):
         self.client.remove_command_handler(COMMAND_JESARI, self.handler)
 
     @staticmethod
-    async def handler(evt: Event) -> None:
+    async def handler(evt: MessageEvent) -> None:
         await evt.respond(MediaMessageEventContent(
             msgtype=MessageType.IMAGE,
             body="putkiteippi.gif",
