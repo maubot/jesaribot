@@ -1,6 +1,6 @@
-from maubot import Plugin, CommandSpec, PassiveCommand
+from maubot import Plugin, CommandSpec, PassiveCommand, MessageEvent
 from mautrix.types import (MessageType, MediaMessageEventContent, ImageInfo, ThumbnailInfo,
-                           ContentURI, MessageEvent)
+                           ContentURI)
 
 COMMAND_JESARI = "xyz.maubot.jesari"
 
