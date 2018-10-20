@@ -46,8 +46,7 @@ class JesariBot(Plugin):
             commands=[Command(
                 syntax=COMMAND_JESARI_QUALITY,
                 arguments={
-                    ARG_QUALITY: Argument("(crap|low|medium|high)", required=True,
-                                          description="The quality"),
+                    ARG_QUALITY: Argument(".+", required=True, description="The quality"),
                 },
                 description="Change the quality of the jesari gif",
             )]
