@@ -16,7 +16,7 @@
 from typing import Type
 
 from maubot import Plugin, CommandSpec, PassiveCommand, Command, Argument, MessageEvent
-from mautrix.util import BaseProxyConfig
+from mautrix.util import BaseProxyConfig, ConfigUpdateHelper
 
 from .versions import gif_versions
 
@@ -26,10 +26,9 @@ COMMAND_JESARI_QUALITY = f"jesariquality {ARG_QUALITY}"
 
 
 class Config(BaseProxyConfig):
-    def update(self):
-        base, copy, copy_dict = self._pre_update()
+    def do_update(self, helper: ConfigUpdateHelper) -> None:
         if self.get("quality", None) in gif_versions.keys():
-            copy("quality")
+            helper.copy("quality")
         else:
             self["quality"] = "high"
 
