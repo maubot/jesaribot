@@ -16,7 +16,7 @@
 from typing import Type
 
 from maubot import Plugin, CommandSpec, PassiveCommand, Command, Argument, MessageEvent
-from mautrix.util import BaseProxyConfig, ConfigUpdateHelper
+from mautrix.util.config import BaseProxyConfig, ConfigUpdateHelper
 
 from .versions import gif_versions
 
