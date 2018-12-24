@@ -13,16 +13,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from typing import Type
+from typing import Type, Tuple
 
-from maubot import Plugin, CommandSpec, PassiveCommand, Command, Argument, MessageEvent
 from mautrix.util.config import BaseProxyConfig, ConfigUpdateHelper
+from maubot import Plugin, MessageEvent
+from maubot.handlers import command
 
 from .versions import gif_versions
-
-COMMAND_JESARI = "xyz.maubot.jesari"
-ARG_QUALITY = "$quality"
-COMMAND_JESARI_QUALITY = f"jesariquality {ARG_QUALITY}"
 
 
 class Config(BaseProxyConfig):
@@ -35,32 +32,16 @@ class Config(BaseProxyConfig):
 
 class JesariBot(Plugin):
     async def start(self) -> None:
+        await super().start()
         self.config.load_and_update()
-        self.set_command_spec(CommandSpec(
-            passive_commands=[PassiveCommand(
-                name=COMMAND_JESARI,
-                matches="jesari",
-                match_against="body",
-            )],
-            commands=[Command(
-                syntax=COMMAND_JESARI_QUALITY,
-                arguments={
-                    ARG_QUALITY: Argument(".+", required=True, description="The quality"),
-                },
-                description="Change the quality of the jesari gif",
-            )]
-        ))
-        self.client.add_command_handler(COMMAND_JESARI, self.handler)
-        self.client.add_command_handler(COMMAND_JESARI_QUALITY, self.quality_handler)
 
-    async def stop(self) -> None:
-        self.client.remove_command_handler(COMMAND_JESARI, self.handler)
-
-    async def handler(self, evt: MessageEvent) -> None:
+    @command.passive("jesari")
+    async def handler(self, evt: MessageEvent, _: Tuple[str]) -> None:
         await evt.respond(gif_versions[self.config["quality"]])
 
-    async def quality_handler(self, evt: MessageEvent) -> None:
-        new_quality = evt.content.command.arguments[ARG_QUALITY]
+    @command.new("jesariquality", help="Change the quality of the jesari gif")
+    @command.argument("new_quality", "quality")
+    async def quality_handler(self, evt: MessageEvent, new_quality: str) -> None:
         if new_quality not in gif_versions.keys():
             await evt.reply(f"Invalid quality. Available qualities: {gif_versions.keys()}")
             return
