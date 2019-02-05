@@ -35,7 +35,7 @@ class JesariBot(Plugin):
         await super().start()
         self.config.load_and_update()
 
-    @command.passive("jesari")
+    @command.passive("jesari", case_insensitive=True)
     async def handler(self, evt: MessageEvent, _: Tuple[str]) -> None:
         await evt.respond(gif_versions[self.config["quality"]])
 
